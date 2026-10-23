@@ -1,0 +1,8 @@
+{
+  "action": "adjust",
+  "command": "receipt-001",
+  "sku": "SENSOR-01",
+  "delta": 20,
+  "expected_version": 0,
+  "reason": "Supplier receipt"
+}
