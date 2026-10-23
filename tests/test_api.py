@@ -22,3 +22,14 @@ class APITests(unittest.TestCase):
  def test_foreign_origin(self):
   with self.assertRaises(HTTPError) as cm: urlopen(Request(self.url,data=b'{}',headers={'Origin':'https://example.com'}))
   self.assertEqual(cm.exception.code,403)
+
+ def test_malformed_and_nonobject_json(self):
+  for payload in [b'[]', b'null', b'{bad', b'1']:
+   with self.subTest(payload=payload):
+    with self.assertRaises(HTTPError) as cm:
+     urlopen(Request(self.url,data=payload))
+    self.assertEqual(cm.exception.code,400)
+ def test_oversized_body(self):
+  with self.assertRaises(HTTPError) as cm:
+   urlopen(Request(self.url,data=b' '*100001))
+  self.assertEqual(cm.exception.code,400)
